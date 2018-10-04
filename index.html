@@ -17,10 +17,17 @@
         Hang Man
     </header>
     
-    <!-- create side bar with images that relate to the styling of the game as I choose.  California nature theme! -->
+    <!-- create side bar with images that relate to the styling of California nature theme! -->
 
     <!-- create press any key to begin trigger -->
     <script type="text/javascript">
+
+        document.addEventListener("keyup", function(startGame) {
+        console.log("Begin!");
+      
+
+        //put in a function from the javascript page that uses wordinplay and executes the game 
+    });
 
     // <!-- set up array for words that the game can choose from -->
     var wordList = [
@@ -35,33 +42,64 @@
         "redtailed hawk",
         "monterrey cyprus",
     ]
+    var userGuess = [];
+    var wrongGuess = [];
 
 // <!-- pick one of the words at random 
     var wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
     console.log(wordInPlay);
+
+    //populate an array with the letters of the wordinplay
+
     var letters = [];
+    for (var i = 0; i < wordInPlay.length; i++) {
+        letters[i] = wordInPlay.charAt(i);
+        console.log(letters);
+        //document.write(letters[i] + ' ');
 
+    }
 
-    // <!-- wait for a key to be hit with an .on function -->
-    document.addEventListener("keyup", function(startGame) {
-        console.log("Begin!");
+    
+    // create an array that collects the users guesses
+    document.addEventListener("keyup", function() {
+
+    document.onkeyup = function(guess) {
+
+// Determines which key was pressed.
+
+        
       
+        //if key pressed is already in the user guess array, alert that they alreay guessed that letter
+        if (userGuess.includes(guess.key)) {
+            alert("Already guessed that one");        
+        }
+        else {userGuess.push(guess.key);}
 
-        //put in a function from the javascript page that uses wordinplay and executes the game 
+        //else if it is within the word in play array, display every instance of the letter in the word div
+        if (letters.includes(guess.key)) {
+            //display that letter instead of the underscores
+        }
+        //else add it to the wrong guess array and subtract one from the guesses left counter
+        else {wrongGuess.push(guess.key)}
+      
+        console.log(userGuess, wrongGuess);
+        
+
+    }
     });
+
+     
+    // <!-- wait for a key to be hit with an .on function -->
+    
 
     
       // generate the blank spaces on the screen with underscores in lieu of the letters, separated by spaces 
     //using a for loop that runs through the wordinplay.charat[] array one at a time and then inserts a space before iterating-->
 
-    for (var i = 0; i < wordInPlay.length; i++) {
-        letters[i] = wordInPlay.charAt(i);
-        console.log(letters);
-        document.write(wordInPlay.charAt(i) + ' ');
-
-    }
+   
     
-    
+    //instead of populating with the word, start by populating the number of underscores and then when a 
+    //guess is made, REPLACE that index with the letter that matches
     
 
     // This function is run whenever the user presses a key to guess a letter.
