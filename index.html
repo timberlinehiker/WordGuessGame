@@ -17,17 +17,30 @@
         Hang Man
     </header>
     
+    
     <!-- create side bar with images that relate to the styling of California nature theme! -->
+    <div id="imageBox">
+        <!-- image to be displayed -->
+    </div>
 
+    <div id="gameBox">
+        <div>
+            <h2>Press Any Key to Start</h2>
+        </div>
+        <div>
+            <h2>Wins: </h2>
+        </div>
+        <div id="currentGame">
+
+            <div id="userGuess"></div>
+            <div id="wrongGuess"></div>
+        </div>
+    </div>
     <!-- create press any key to begin trigger -->
     <script type="text/javascript">
 
-        document.addEventListener("keyup", function(startGame) {
-        console.log("Begin!");
-      
-
-        //put in a function from the javascript page that uses wordinplay and executes the game 
-    });
+    
+    //  DECLARE VARIABLES
 
     // <!-- set up array for words that the game can choose from -->
     var wordList = [
@@ -43,50 +56,77 @@
         "monterrey cyprus",
     ]
     var userGuess = [];
-    var wrongGuess = [];
-
-// <!-- pick one of the words at random 
-    var wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
-    console.log(wordInPlay);
-
-    //populate an array with the letters of the wordinplay
+    var alreadyGuessed = [];
 
     var letters = [];
-    for (var i = 0; i < wordInPlay.length; i++) {
-        letters[i] = wordInPlay.charAt(i);
-        console.log(letters);
-        //document.write(letters[i] + ' ');
+    var wordInPlay = []
+    
 
-    }
+    //  SET UP INTITAL VALUES IN RESETGAME METHOD    
+    function resetGame() {
+        userGuess = [];
+        alreadyGuessed = [];
+
+        letters = [];
+        // <!-- pick one of the words at random 
+        wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
+        console.log(wordInPlay);
+
+        //populate an array with the letters of the wordinplay
+
+        for (var i = 0; i < wordInPlay.length; i++) {
+            letters[i] = wordInPlay.charAt(i);
+            userGuess[i] = "_";
+            console.log(letters);
+            //document.write(letters[i] + ' ');
+
+        }
+
 
     
+    }
+
+
+
+    // CREATE LETTER LISTENER
     // create an array that collects the users guesses
-    document.addEventListener("keyup", function() {
+    //document.addEventListener("keyup", function() {
 
     document.onkeyup = function(guess) {
 
 // Determines which key was pressed.
 
-        
+        console.log(guess.key);
       
         //if key pressed is already in the user guess array, alert that they alreay guessed that letter
-        if (userGuess.includes(guess.key)) {
+        if (alreadyGuessed.includes(guess.key)) {
             alert("Already guessed that one");        
+            return false;
         }
-        else {userGuess.push(guess.key);}
+        else {
+            alreadyGuessed.push(guess.key);
+            for (var i = 0; i<letters.length; i++) {
+                if (letters[i] === guess.key) {
+                    userGuess[i] = guess.key;
+                    $("#userGuess").html(userGuess);
+                    $("#alreadyGuessed").html(userGuess);
 
-        //else if it is within the word in play array, display every instance of the letter in the word div
-        if (letters.includes(guess.key)) {
-            //display that letter instead of the underscores
+                }
+            }
         }
-        //else add it to the wrong guess array and subtract one from the guesses left counter
-        else {wrongGuess.push(guess.key)}
-      
-        console.log(userGuess, wrongGuess);
+
+        console.log(userGuess, alreadyGuessed);
         
 
     }
-    });
+    
+    // CALL RESET GAME TO START GAME ON PAGE LOAD
+    resetGame();
+
+
+
+
+
 
      
     // <!-- wait for a key to be hit with an .on function -->
@@ -101,14 +141,7 @@
     //instead of populating with the word, start by populating the number of underscores and then when a 
     //guess is made, REPLACE that index with the letter that matches
     
-
-    // This function is run whenever the user presses a key to guess a letter.
-    document.onkeyup = function(event) {
-
-   // Determines which key was pressed.
-   var userGuess = event.key;
-}
-
+  
 // when the user guesses a letter, send that letter into an array using the .push function
 //   check to see if the letter pressed matches any of the letters already guessed.  
 // If yes, make an obnoxious sound and do nothing else until another guess.
