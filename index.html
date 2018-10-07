@@ -34,14 +34,15 @@
             <h2>Wins: </h2>
         </div>
         <div id="currentGame">
-
+            <h3>Current Word: </h3>
             <div id="userGuess">
-                <h3>Current Word: </h3>
             </div>
             <div id="alreadyGuessed">
                 <h3>Letters Guessed: </h3>
             </div>
-            <div id="wrongGuess"></div>
+            <h3>Guesses Left: </h3>
+            <div id="wrongGuess">
+            </div>
         </div>
     </div>
     <!-- create press any key to begin trigger -->
@@ -75,7 +76,7 @@
             userGuess = [];
             alreadyGuessed = [];
             letters = [];
-            wrongGuesses = [];
+            wrongGuesses = 10;
 
             // <!-- pick one of the words at random 
             wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
@@ -91,7 +92,7 @@
                 //document.write(letters[i] + ' ');
 
             }
-
+            $("#wrongGuess").html(wrongGuesses);
 
 
         }
@@ -128,7 +129,9 @@
                 }
             
             else {
-                wrongGuesses++;
+                wrongGuesses = wrongGuesses - 1;
+                console.log(wrongGuesses);
+                $("#wrongGuess").html(wrongGuesses);
                 alreadyGuessed.push(guess.key);
                 $("#alreadyGuessed").append(guess.key, " ");
             }
