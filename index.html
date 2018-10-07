@@ -32,13 +32,14 @@
         </div>
         <div>
             <h2>Wins: </h2>
+            <div id="wins"></div>
         </div>
         <div id="currentGame">
             <h3>Current Word: </h3>
-            <div id="userGuess">
-            </div>
+            <div id="userGuess"></div>
+            <h3>Letters Guessed: </h3>
             <div id="alreadyGuessed">
-                <h3>Letters Guessed: </h3>
+                
             </div>
             <h3>Guesses Left: </h3>
             <div id="wrongGuess">
@@ -77,7 +78,9 @@
             alreadyGuessed = [];
             letters = [];
             wrongGuesses = 10;
-
+            $("#userGuess").empty();
+            $("#alreadyGuessed").empty();
+          
             // <!-- pick one of the words at random 
             wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
             console.log(wordInPlay);
@@ -136,8 +139,15 @@
                 $("#alreadyGuessed").append(guess.key, " ");
             }
             console.log(userGuess, alreadyGuessed);
-
-
+            if (wrongGuesses <= 0) {
+                alert("YOU LOSE");
+                resetGame();
+            }
+            console.log(userGuess, letters);
+            if(userGuess.toString() === letters.toString()) {
+                alert("YOU WIN!!");
+                resetGame();
+            }
         }
 
         // CALL RESET GAME TO START GAME ON PAGE LOAD
