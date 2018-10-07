@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Hang Man</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 </head>
+
 <body>
     <!-- create header with hangman text and awesome styling from somewhere-->
-    <header> 
+    <header>
         Hang Man
     </header>
-    
-    
+
+
     <!-- create side bar with images that relate to the styling of California nature theme! -->
     <div id="imageBox">
         <!-- image to be displayed -->
@@ -32,116 +35,130 @@
         </div>
         <div id="currentGame">
 
-            <div id="userGuess"></div>
+            <div id="userGuess">
+                <h3>Current Word: </h3>
+            </div>
+            <div id="alreadyGuessed">
+                <h3>Letters Guessed: </h3>
+            </div>
             <div id="wrongGuess"></div>
         </div>
     </div>
     <!-- create press any key to begin trigger -->
     <script type="text/javascript">
 
-    
-    //  DECLARE VARIABLES
 
-    // <!-- set up array for words that the game can choose from -->
-    var wordList = [
-        "sequoia",
-        "redwood",
-        "sierra",
-        "cascade",
-        "ocean",
-        "poppy",
-        "humpback whale",
-        "calla lily",
-        "redtailed hawk",
-        "monterrey cyprus",
-    ]
-    var userGuess = [];
-    var alreadyGuessed = [];
+        //  DECLARE VARIABLES
 
-    var letters = [];
-    var wordInPlay = []
-    
+        // <!-- set up array for words that the game can choose from -->
+        var wordList = [
+            "sequoia",
+            "redwood",
+            "sierra",
+            "cascade",
+            "ocean",
+            "poppy",
+            "humpback whale",
+            "calla lily",
+            "redtailed hawk",
+            "monterrey cyprus",
+        ]
+        var userGuess = [];
+        var alreadyGuessed = [];
 
-    //  SET UP INTITAL VALUES IN RESETGAME METHOD    
-    function resetGame() {
-        userGuess = [];
-        alreadyGuessed = [];
-
-        letters = [];
-        // <!-- pick one of the words at random 
-        wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
-        console.log(wordInPlay);
-
-        //populate an array with the letters of the wordinplay
-
-        for (var i = 0; i < wordInPlay.length; i++) {
-            letters[i] = wordInPlay.charAt(i);
-            userGuess[i] = "_";
-            console.log(letters);
-            //document.write(letters[i] + ' ');
-
-        }
+        var letters = [];
+        var wordInPlay = []
 
 
-    
-    }
+        //  SET UP INTITAL VALUES IN RESETGAME METHOD    
+        function resetGame() {
+            userGuess = [];
+            alreadyGuessed = [];
+            letters = [];
+            wrongGuesses = [];
 
+            // <!-- pick one of the words at random 
+            wordInPlay = wordList[Math.floor(Math.random() * wordList.length)];
+            console.log(wordInPlay);
 
+            //populate an array with the letters of the wordinplay
 
-    // CREATE LETTER LISTENER
-    // create an array that collects the users guesses
-    //document.addEventListener("keyup", function() {
+            for (var i = 0; i < wordInPlay.length; i++) {
+                letters[i] = wordInPlay.charAt(i);
+                userGuess[i] = "_";
+                $("#userGuess").append(userGuess[i] + " ");
+                console.log(letters);
+                //document.write(letters[i] + ' ');
 
-    document.onkeyup = function(guess) {
-
-// Determines which key was pressed.
-
-        console.log(guess.key);
-      
-        //if key pressed is already in the user guess array, alert that they alreay guessed that letter
-        if (alreadyGuessed.includes(guess.key)) {
-            alert("Already guessed that one");        
-            return false;
-        }
-        else {
-            alreadyGuessed.push(guess.key);
-            for (var i = 0; i<letters.length; i++) {
-                if (letters[i] === guess.key) {
-                    userGuess[i] = guess.key;
-                    $("#userGuess").html(userGuess);
-                    $("#alreadyGuessed").html(userGuess);
-
-                }
             }
+
+
+
         }
 
-        console.log(userGuess, alreadyGuessed);
-        
-
-    }
-    
-    // CALL RESET GAME TO START GAME ON PAGE LOAD
-    resetGame();
 
 
+        // CREATE LETTER LISTENER
+        // create an array that collects the users guesses
+        //document.addEventListener("keyup", function() {
+
+        document.onkeyup = function (guess) {
+
+            // Determines which key was pressed.
+
+            console.log(guess.key);
+
+            //if key pressed is already in the user guess array, alert that they alreay guessed that letter
+            if (alreadyGuessed.includes(guess.key) ||userGuess.includes(guess.key)) {
+                alert("Already guessed that one");
+                return false;
+            }
+            else if (letters.includes(guess.key)) {
+                $("#userGuess").empty();
+                    for (var i = 0; i < letters.length; i++) {
+                        if (letters[i] === guess.key) {
+                            userGuess[i] = guess.key;
+                            // $("#userGuess").html(userGuess);
+
+
+                        }
+                        $("#userGuess").append(userGuess[i] + " ");
+                    }
+                    
+                }
+            
+            else {
+                wrongGuesses++;
+                alreadyGuessed.push(guess.key);
+                $("#alreadyGuessed").append(guess.key, " ");
+            }
+            console.log(userGuess, alreadyGuessed);
+
+
+        }
+
+        // CALL RESET GAME TO START GAME ON PAGE LOAD
+        resetGame();
 
 
 
 
-     
+
+
+
     // <!-- wait for a key to be hit with an .on function -->
-    
 
-    
+
+
       // generate the blank spaces on the screen with underscores in lieu of the letters, separated by spaces 
     //using a for loop that runs through the wordinplay.charat[] array one at a time and then inserts a space before iterating-->
 
-   
-    
+
+
     //instead of populating with the word, start by populating the number of underscores and then when a 
     //guess is made, REPLACE that index with the letter that matches
-    
-  
+
+
 // when the user guesses a letter, send that letter into an array using the .push function
 //   check to see if the letter pressed matches any of the letters already guessed.  
 // If yes, make an obnoxious sound and do nothing else until another guess.
@@ -156,6 +173,7 @@
 
 //  <!--  -->
 
- </script>
+    </script>
 </body>
+
 </html>
